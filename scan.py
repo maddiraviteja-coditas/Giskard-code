@@ -11,9 +11,10 @@ import giskard
 import pandas as pd
 from dotenv import load_dotenv
 load_dotenv()
+import os 
 
 groq_client = openai.OpenAI(
-    api_key ="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",
+    api_key =os.getenv["GROQ_API_KEY"],
     base_url="https://api.groq.com/openai/v1"         
     )
 giskard.llm.set_llm_api("openai")
@@ -41,7 +42,7 @@ Question:
 Your answer:
 """
 
-llm = ChatGroq(model="gpt-3.5-turbo-instruct", temperature=0)
+llm = ChatGroq(model="llama3-70b-8192", temperature=0)
 prompt = PromptTemplate(template=PROMPT_TEMPLATE, input_variables=["question", "context"])
 climate_qa_chain = RetrievalQA.from_llm(llm=llm, retriever=db.as_retriever(), prompt=prompt)
 
@@ -70,5 +71,5 @@ examples = [
 giskard_dataset = giskard.Dataset(pd.DataFrame({"question": examples}), target=None)
                                   
 report = giskard.scan(giskard_model, giskard_dataset, only="hallucination")
-report.to_html("ipcc_scan_report.html")
-report.to_json("ipcc_scan_report.json")
+report.to_html("ipcc_scan_report1.html")
+report.to_json("ipcc_scan_report1.json")
