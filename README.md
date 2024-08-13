@@ -1,1 +1,1 @@
-# gitinit
+README
