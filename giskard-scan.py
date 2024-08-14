@@ -14,7 +14,7 @@ load_dotenv()
 import os 
 
 groq_client = openai.OpenAI(
-    api_key =os.getenv["GROQ_API_KEY"],
+    api_key =os.getenv("GROQ_API_KEY"),
     base_url="https://api.groq.com/openai/v1"         
     )
 giskard.llm.set_llm_api("openai")
@@ -64,12 +64,10 @@ giskard_model = giskard.Model(
     description="This model answers any question about climate change based on IPCC reports",
     feature_names=["question"],
 )
-examples = [
-    "According to the IPCC report, what are key risks in the Europe?",
-    "Is sea level rise avoidable? When will it stop?",
-]
+question_df = pd.read_csv("ipcc_test_csv.csv")
+examples = list(question_df.loc[:, "question"])
 giskard_dataset = giskard.Dataset(pd.DataFrame({"question": examples}), target=None)
                                   
-report = giskard.scan(giskard_model, giskard_dataset, only="hallucination")
-report.to_html("ipcc_scan_report1.html")
-report.to_json("ipcc_scan_report1.json")
+report = giskard.scan(giskard_model, giskard_dataset)
+report.to_html("ipcc_scan_report2.html")
+report.to_json("ipcc_scan_report2.json")

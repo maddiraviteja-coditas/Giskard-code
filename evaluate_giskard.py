@@ -8,7 +8,7 @@ from langchain_chroma import Chroma
 import openai
 import pandas as pd
 from giskard.rag import evaluate
-from utils import chain
+from test_set import chain
 import sys
 import os
 from dotenv import load_dotenv
